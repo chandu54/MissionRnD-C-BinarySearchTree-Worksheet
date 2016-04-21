@@ -22,16 +22,59 @@ Note : Return -1 for Invalid Cases .
 
 #include <stdlib.h>
 #include <stdio.h>
+#include<queue>
+using namespace std;
 
 struct node{
 	struct node * left;
 	int data;
 	struct node *right;
 };
-
-
+void LevelNode(struct node* root, int level, int arr[], int *index)
+{
+	if (root == NULL)
+	{
+		return;
+	}
+	if (level == 1)
+	{
+		arr[*index] = root->data;
+		(*index)++;
+		return;
+	}
+	else if (level > 1)
+	{
+		LevelNode(root->right, level - 1, arr,index);
+		LevelNode(root->left, level - 1, arr, index);
+	}
+}
+int height(struct node*root)
+{
+	int h1, h2;
+	if (root == NULL)
+		return 0;
+	else
+	{
+		h1 = height(root->left);
+		h2 = height(root->right);
+		return 1 + ((h1 > h2) ? h1 : h2);
+	}
+}
 
 int* BSTRighttoLeftRows(struct node* root)
 {
-    return NULL;
+	if (root == NULL)
+		return NULL;
+	int h = height(root);
+	int i;
+	int *arr = (int *)malloc(sizeof(int) *20);
+	int index = 0;
+	for (i = 1; i <= h; i++)
+	{
+		LevelNode(root, i, arr, &index);
+	}
+
+	return arr;
 }
+
+		
