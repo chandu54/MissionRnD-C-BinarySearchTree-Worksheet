@@ -34,12 +34,78 @@ Return -1 ,for Invalid Inputs
 #include <stdio.h>
 
 struct node{
-  struct node * left;
-  int data;
-  struct node *right;
+	struct node * left;
+	int data;
+	struct node *right;
 };
+
+int  minflag = 0, flag = 0;
+int min, level, distance;
+
+
+void minHeight(struct node *node, int index) // To find minimum distace from given  node to leaf
+{
+
+	if (node->left != NULL)  minHeight(node->left, index + 1);
+
+	if (node->right != NULL)  minHeight(node->right, index + 1);
+
+	if (minflag == 0 && node->left == NULL &&node->right == NULL)
+	{
+		minflag = 1;
+		min = index;
+	}
+
+	else if (min > index && node->left == NULL &&node->right == NULL)
+		min = index;
+
+}
+
+
+
+
+void pathToNode(struct node *node, struct node*temp, int index)// This function traverse from root to given temp node. 
+{
+	int a = 0, b = 0;
+	if (node == NULL) return;
+
+	if (node == temp)
+	{
+		minflag = 0;
+		minHeight(node, level++);
+		distance = min;
+		flag = 1;
+		return;
+	}
+
+
+	if (flag == 0)
+	{
+		pathToNode(node->left, temp, index + 1);
+
+		if (flag == 0)
+			pathToNode(node->right, temp, index + 1);
+	}
+
+	if (flag == 1)
+	{
+		minflag = 0;
+		minHeight(node, level++);
+		if (distance > min) distance = min;
+		return;
+	}
+
+}
 
 int get_closest_leaf_distance(struct node *root, struct node *temp)
 {
-  return -1;
+	if (root == NULL || temp == NULL)
+		return -1;
+
+	int index = 0;
+	flag = 0;
+	level = 0;
+	pathToNode(root, temp, index + 1);
+	return distance;
+
 }
