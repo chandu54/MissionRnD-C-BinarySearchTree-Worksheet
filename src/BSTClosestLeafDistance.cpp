@@ -101,7 +101,6 @@ int get_closest_leaf_distance(struct node *root, struct node *temp)
 {
 	if (root == NULL || temp == NULL)
 		return -1;
-
 	int index = 0;
 	flag = 0;
 	level = 0;
